@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NurulQuran Pakistan — Shared Executive Visit Report</title>
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+</head>
+<body style="background: #f8fafc;">
+
+  <!-- Header -->
+  <header class="header-bar">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">NQ</div>
+        <div class="brand-text">
+          <h1>NurulQuran Pakistan</h1>
+          <p>Executive Branch Inspection Report</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:0.5rem; align-items:center;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="window.print()">🖨️ Print / Save PDF</button>
+        <span class="badge" style="background:#0284c7; color:#fff;" id="share-label-badge">Shared Report</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content" style="max-width: 1100px;">
+    <div id="loading-spinner" style="text-align:center; padding: 4rem 1rem;">
+      <div style="font-size:2rem; margin-bottom:1rem;">⏳</div>
+      <p style="color:var(--text-muted);">Validating secure link and loading report...</p>
+    </div>
+
+    <div id="error-container" style="display:none; text-align:center; padding: 4rem 1rem;">
+      <div style="font-size:2rem; margin-bottom:1rem;">⚠️</div>
+      <h3 style="color:#b91c1c; margin-bottom:0.5rem;" id="error-title">Link Inactive</h3>
+      <p style="color:var(--text-muted);" id="error-message">This share link may have expired or been revoked.</p>
+    </div>
+
+    <div id="report-container" style="display:none;">
+      
+      <!-- Executive Summary Banner -->
+      <div class="scorecard-banner" style="margin-top:1rem;">
+        <div>
+          <div style="font-size:0.85rem; opacity:0.85; text-transform:uppercase;">Director's Inspection Report</div>
+          <h2 id="rep-branch" style="font-size:2rem; color:#fff; margin:0.25rem 0;">Branch</h2>
+          <div style="display:flex; gap:0.75rem; font-size:0.85rem; flex-wrap:wrap;">
+            <span>Visit Date: <strong id="rep-date">-</strong></span>
+            <span>•</span>
+            <span id="rep-type" class="badge" style="background:rgba(255,255,255,0.2); color:#fff;">Scheduled</span>
+            <span>•</span>
+            <span>OMS Status: <strong id="rep-oms">-</strong></span>
+          </div>
+        </div>
+
+        <div style="text-align:right;">
+          <div class="score-display">
+            <span class="score-large" id="rep-score">0</span>
+            <span class="score-denom">/ <span id="rep-max">700</span> (<span id="rep-percent">0%</span>)</span>
+          </div>
+          <div id="rep-rating" class="badge badge-satisfactory">Satisfactory</div>
+        </div>
+      </div>
+
+      <!-- Meta Information -->
+      <div class="card">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1rem; font-size:0.875rem;">
+          <div><span style="color:var(--text-muted);">Accompanied By:</span> <strong id="rep-accompanied">-</strong></div>
+          <div><span style="color:var(--text-muted);">Inspection Window:</span> <strong id="rep-times">-</strong></div>
+          <div><span style="color:var(--text-muted);">OMS Reference:</span> <strong id="rep-oms-ref">-</strong></div>
+          <div><span style="color:var(--text-muted);">OMS Entry Date:</span> <strong id="rep-oms-date">-</strong></div>
+        </div>
+      </div>
+
+      <!-- Scorecard Table -->
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom:1rem;">PART O — BRANCH SCORECARD SUMMARY</h3>
+        <div class="table-responsive">
+          <table class="table scorecard-table">
+            <thead>
+              <tr>
+                <th>Area</th>
+                <th style="width:80px;">Max</th>
+                <th style="width:80px;">Score</th>
+                <th>% Progress</th>
+                <th style="width:130px;">Rating</th>
+              </tr>
+            </thead>
+            <tbody id="rep-scorecard-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Strengths & Weaknesses (Part L) -->
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom:1rem;">PART L — KEY FINDINGS & RECOMMENDATIONS</h3>
+        
+        <div style="margin-bottom:1.5rem;">
+          <h4 style="font-size:0.95rem; color:#15803d; margin-bottom:0.5rem;">Strengths Identified</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width:35px;">#</th>
+                  <th>Strength</th>
+                  <th>Evidence</th>
+                  <th>How to replicate elsewhere</th>
+                </tr>
+              </thead>
+              <tbody id="rep-strengths-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="margin-bottom:1.5rem;">
+          <h4 style="font-size:0.95rem; color:#b91c1c; margin-bottom:0.5rem;">Weaknesses (Cons)</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width:35px;">#</th>
+                  <th>Weakness</th>
+                  <th style="width:100px;">Severity</th>
+                  <th>Root cause</th>
+                  <th>Immediate action</th>
+                </tr>
+              </thead>
+              <tbody id="rep-weaknesses-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-size:0.95rem; color:#991b1b; margin-bottom:0.5rem;">Deficiencies Found</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width:35px;">#</th>
+                  <th>Deficiency</th>
+                  <th>Risk</th>
+                  <th style="width:100px;">Legal Breach?</th>
+                  <th>Action Required</th>
+                  <th style="width:100px;">Deadline</th>
+                </tr>
+              </thead>
+              <tbody id="rep-deficiencies-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Photos -->
+      <div class="card" id="rep-photos-card">
+        <h3 class="card-title" style="margin-bottom:0.5rem;">📸 Inspection Photos</h3>
+        <p class="card-subtitle" style="margin-bottom:1rem;">Photographic evidence logged during arrival and physical walk-through.</p>
+        <div id="rep-photos-gallery" class="photo-grid"></div>
+      </div>
+
+      <!-- Post Visit Action Plan (Part N) -->
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom:0.5rem;">PART N — POST-VISIT ACTIONS (WITHIN 48 HOURS)</h3>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width:35px;">#</th>
+                <th>Action</th>
+                <th style="width:110px;">Deadline</th>
+                <th style="width:140px;">Owner</th>
+                <th style="width:70px; text-align:center;">Status</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="rep-actions-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Part P: Signatures -->
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom:0.75rem;">PART P — DIRECTOR'S SIGN-OFF</h3>
+        <div style="padding:0.75rem; background:var(--bg-subtle); border-radius:var(--radius); margin-bottom:1rem; font-style:italic; font-size:0.85rem;">
+          "I certify that I personally visited this branch, conducted the inspection, interviewed staff and students, and that the findings in this report are accurate to the best of my knowledge."
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem;">
+          <div style="text-align:center; padding:1rem; border:1px solid var(--border-light); border-radius:var(--radius);">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.5rem; color:var(--text-muted);">DIRECTOR'S SIGNATURE</div>
+            <div id="rep-director-sig-container" style="height:100px; display:flex; align-items:center; justify-content:center;">
+              <span style="color:#94a3b8; font-style:italic;">Pending Director Signature</span>
+            </div>
+            <div style="font-size:0.75rem; margin-top:0.5rem; color:var(--text-muted);" id="rep-director-sig-date"></div>
+          </div>
+
+          <div style="text-align:center; padding:1rem; border:1px solid var(--border-light); border-radius:var(--radius);">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.5rem; color:var(--text-muted);">BRANCH MANAGER'S ACKNOWLEDGMENT</div>
+            <div id="rep-manager-sig-container" style="height:100px; display:flex; align-items:center; justify-content:center;">
+              <span style="color:#94a3b8; font-style:italic;">Pending Manager Acknowledgment</span>
+            </div>
+            <div style="font-size:0.75rem; margin-top:0.5rem; color:var(--text-muted);" id="rep-manager-sig-date"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer with Rule 1 Versioning -->
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>NurulQuran Pakistan</strong> — Executive Branch Inspection System
+      </div>
+      <div>
+        <span class="version-badge">v1.0.1 (updated 2026-10-14 11:08)</span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/shared.js"></script>
+</body>
+</html>
