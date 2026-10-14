@@ -3,6 +3,19 @@ import { cors } from 'hono/cors';
 import { Env, User, VisitRecord, VisitData, ShareToken, ScheduleItem } from './types';
 import { hashPassword, verifyPassword, generateToken, parseCookie, getSessionUser } from './auth';
 import { createDefaultVisitData, calculateScorecard, INITIAL_BRANCH_SCHEDULE_2026 } from './default-checklist';
+import {
+  TIME_ALLOCATIONS,
+  DAILY_CHECKLIST_TEMPLATE,
+  WEEKLY_CHECKLIST,
+  BIWEEKLY_CHECKLIST,
+  MONTHLY_CHECKLIST,
+  QUARTERLY_CHECKLIST,
+  YEARLY_CALENDAR,
+  ANNUAL_ONE_TIME_DUTIES,
+  DIRECTOR_KPIS,
+  DELEGATION_RULES,
+  ACCOUNTABILITY_TERMS
+} from './operating-checklist-data';
 
 const app = new Hono<{ Bindings: Env; Variables: { user?: User } }>();
 
@@ -103,6 +116,23 @@ app.post('/api/auth/setup', async (c) => {
         now
       ).run();
     }
+  }
+
+  // Seed default 2026 Director Scorecard KPIs
+  for (const kpi of DIRECTOR_KPIS) {
+    await db.prepare(`
+      INSERT INTO director_kpis (id, year, kpi_num, kpi, target, measured_by, current_value, status, notes, updated_at)
+      VALUES (?, 2026, ?, ?, ?, ?, ?, ?, '', ?)
+    `).bind(
+      'kpi_' + generateToken().substring(0, 12),
+      kpi.kpiNum,
+      kpi.kpi,
+      kpi.target,
+      kpi.measuredBy,
+      kpi.currentValue || '',
+      kpi.status || 'on_track',
+      now
+    ).run();
   }
 
   return c.json({
@@ -712,6 +742,201 @@ app.get('/api/stats', async (c) => {
     annualCompletedVisits: completedScheduleCountRes?.count || 0,
     annualTarget: 24
   });
+});
+
+// -------------------------------------------------------------
+// Director's Operating Checklist Endpoints
+// -------------------------------------------------------------
+app.get('/api/operating/data', (c) => {
+  return c.json({
+    timeAllocations: TIME_ALLOCATIONS,
+    weekly: WEEKLY_CHECKLIST,
+    biweekly: BIWEEKLY_CHECKLIST,
+    monthly: MONTHLY_CHECKLIST,
+    quarterly: QUARTERLY_CHECKLIST,
+    yearly: YEARLY_CALENDAR,
+    annualOneTime: ANNUAL_ONE_TIME_DUTIES,
+    delegationRules: DELEGATION_RULES,
+    accountabilityTerms: ACCOUNTABILITY_TERMS
+  });
+});
+
+// Get daily checklist log for a date (defaults to today)
+app.get('/api/operating/daily', async (c) => {
+  const db = c.env.DB;
+  const date = c.req.query('date') || new Date().toISOString().substring(0, 10);
+
+  const existing = await db.prepare(
+    'SELECT * FROM operating_logs WHERE log_date = ? AND log_type = "daily"'
+  ).bind(date).first();
+
+  if (existing) {
+    try {
+      return c.json({
+        date,
+        log: {
+          ...existing,
+          data: JSON.parse((existing as any).data_json)
+        }
+      });
+    } catch {
+      // Fallback
+    }
+  }
+
+  return c.json({
+    date,
+    log: {
+      id: null,
+      log_date: date,
+      log_type: 'daily',
+      completed_count: 0,
+      total_count: 16,
+      signed_off: 0,
+      data: DAILY_CHECKLIST_TEMPLATE
+    }
+  });
+});
+
+// Save or update daily checklist
+app.post('/api/operating/daily', async (c) => {
+  const user = c.get('user');
+  const db = c.env.DB;
+  const body = await c.req.json<{
+    date: string;
+    data: any;
+    signed_off?: boolean;
+  }>();
+
+  if (!body.date || !body.data) {
+    return c.json({ error: 'Date and data are required' }, 400);
+  }
+
+  const now = new Date().toISOString();
+  
+  // Count completed tasks
+  let completedCount = 0;
+  let totalCount = 0;
+  ['morning', 'midday', 'afternoon', 'endOfDay'].forEach((sec) => {
+    if (Array.isArray(body.data[sec])) {
+      totalCount += body.data[sec].length;
+      completedCount += body.data[sec].filter((t: any) => t.done).length;
+    }
+  });
+
+  const existing = await db.prepare(
+    'SELECT id FROM operating_logs WHERE log_date = ? AND log_type = "daily"'
+  ).bind(body.date).first<{ id: string }>();
+
+  if (existing) {
+    await db.prepare(`
+      UPDATE operating_logs SET
+        data_json = ?,
+        completed_count = ?,
+        total_count = ?,
+        signed_off = ?,
+        signed_at = CASE WHEN ? = 1 THEN ? ELSE signed_at END,
+        updated_at = ?
+      WHERE id = ?
+    `).bind(
+      JSON.stringify(body.data),
+      completedCount,
+      totalCount,
+      body.signed_off ? 1 : 0,
+      body.signed_off ? 1 : 0,
+      now,
+      now,
+      existing.id
+    ).run();
+
+    return c.json({ success: true, id: existing.id, completedCount, totalCount });
+  } else {
+    const id = 'op_' + generateToken().substring(0, 12);
+    await db.prepare(`
+      INSERT INTO operating_logs (
+        id, log_date, log_type, data_json, completed_count, total_count,
+        signed_off, signed_at, created_by, created_at, updated_at
+      ) VALUES (?, ?, 'daily', ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      id,
+      body.date,
+      JSON.stringify(body.data),
+      completedCount,
+      totalCount,
+      body.signed_off ? 1 : 0,
+      body.signed_off ? now : null,
+      user?.name || 'Director',
+      now,
+      now
+    ).run();
+
+    return c.json({ success: true, id, completedCount, totalCount });
+  }
+});
+
+// Get Director KPIs
+app.get('/api/operating/kpis', async (c) => {
+  const db = c.env.DB;
+  const year = parseInt(c.req.query('year') || '2026', 10);
+
+  let { results } = await db.prepare(
+    'SELECT * FROM director_kpis WHERE year = ? ORDER BY kpi_num ASC'
+  ).bind(year).all();
+
+  // If no KPIs seeded yet, seed and return
+  if (!results || results.length === 0) {
+    const now = new Date().toISOString();
+    for (const kpi of DIRECTOR_KPIS) {
+      const id = 'kpi_' + generateToken().substring(0, 12);
+      await db.prepare(`
+        INSERT INTO director_kpis (id, year, kpi_num, kpi, target, measured_by, current_value, status, notes, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, '', ?)
+      `).bind(id, year, kpi.kpiNum, kpi.kpi, kpi.target, kpi.measuredBy, kpi.currentValue || '', kpi.status || 'on_track', now).run();
+    }
+    const refreshed = await db.prepare(
+      'SELECT * FROM director_kpis WHERE year = ? ORDER BY kpi_num ASC'
+    ).bind(year).all();
+    results = refreshed.results;
+  }
+
+  return c.json({ year, kpis: results || [] });
+});
+
+// Update specific Director KPI
+app.put('/api/operating/kpis/:id', async (c) => {
+  const user = c.get('user');
+  if (user?.role !== 'director') {
+    return c.json({ error: 'Only the Director can update performance scorecard KPIs' }, 403);
+  }
+
+  const id = c.req.param('id');
+  const body = await c.req.json<{
+    current_value?: string;
+    status?: 'on_track' | 'attention' | 'critical' | 'achieved';
+    notes?: string;
+  }>();
+
+  const now = new Date().toISOString();
+  await c.env.DB.prepare(`
+    UPDATE director_kpis SET
+      current_value = COALESCE(?, current_value),
+      status = COALESCE(?, status),
+      notes = COALESCE(?, notes),
+      updated_at = ?
+    WHERE id = ?
+  `).bind(body.current_value || null, body.status || null, body.notes || null, now, id).run();
+
+  return c.json({ success: true, message: 'KPI updated successfully' });
+});
+
+// List recent operating logs
+app.get('/api/operating/logs', async (c) => {
+  const db = c.env.DB;
+  const { results } = await db.prepare(
+    'SELECT id, log_date, log_type, completed_count, total_count, signed_off, signed_at, created_by, updated_at FROM operating_logs ORDER BY log_date DESC LIMIT 30'
+  ).all();
+
+  return c.json({ logs: results || [] });
 });
 
 // Static assets fallback for Cloudflare Workers

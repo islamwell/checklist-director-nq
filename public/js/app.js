@@ -16,6 +16,7 @@ import {
   PART_N_ACTIONS
 } from './checklist-data.js';
 import { SignaturePad } from './signature.js';
+import { OperatingChecklistManager } from './operating.js';
 
 // Application State
 const state = {
@@ -28,7 +29,8 @@ const state = {
   stats: null,
   saveTimeout: null,
   directorSigPad: null,
-  managerSigPad: null
+  managerSigPad: null,
+  opManager: null
 };
 
 // UI Elements
@@ -48,6 +50,7 @@ const el = {
     visits: document.getElementById('view-visits'),
     editor: document.getElementById('view-editor'),
     schedule: document.getElementById('view-schedule'),
+    operating: document.getElementById('view-operating'),
     users: document.getElementById('view-users')
   },
 
@@ -211,6 +214,12 @@ function showAdminScreen() {
     usersTabBtn.style.display = state.user.role === 'director' ? 'flex' : 'none';
   }
 
+  if (!state.opManager) {
+    state.opManager = new OperatingChecklistManager();
+    window.opManager = state.opManager;
+    state.opManager.init();
+  }
+
   switchTab('dashboard');
 }
 
@@ -228,6 +237,7 @@ export function switchTab(tabName) {
   if (tabName === 'dashboard') loadDashboardData();
   if (tabName === 'visits') loadVisitsList();
   if (tabName === 'schedule') loadRotationSchedule();
+  if (tabName === 'operating' && state.opManager) state.opManager.loadDailyLog(state.opManager.currentDate);
   if (tabName === 'users') loadUsersList();
 }
 

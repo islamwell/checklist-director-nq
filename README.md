@@ -1,7 +1,11 @@
-# DIRECTOR'S BRANCH VISIT & INSPECTION SYSTEM — NURULQURAN PAKISTAN
+# DIRECTOR'S GOVERNANCE, INSPECTION & OPERATING PORTAL — NURULQURAN PAKISTAN
 
-**Standardised inspection system for every campus and branch unit.**
-Every visit produces a written report with scores, photos, findings, and an action plan. The report goes into the OMS within 48 hours.
+> **Live Cloudflare Production URL:** [https://checklist-director-nq.nurulquran.workers.dev](https://checklist-director-nq.nurulquran.workers.dev)  
+> **GitHub Repository:** [https://github.com/islamwell/checklist-director-nq](https://github.com/islamwell/checklist-director-nq)
+
+This integrated portal combines two core executive governance frameworks:
+1. **Director's Branch Visit & Inspection System** (Campus walk-throughs, evidence, photos, live scorecards, and action plans).
+2. **Director's Operating Checklist** (Target time allocation, daily/weekly/biweekly/monthly/quarterly/annual operational accountability, 14-KPI scorecard, delegation rules, and board review terms).
 
 ---
 
@@ -12,6 +16,9 @@ Every visit produces a written report with scores, photos, findings, and an acti
   - Each branch visited at least once every 8 weeks.
   - HQ visited monthly.
   - Minimum quota: **24 documented visits per year**.
+- **Director Compensation & Responsibility:**
+  - At **PKR 500,000/month (PKR 6,000,000/year)**, the Director must control, protect, or generate a multiple of that amount.
+  - **Rule:** *"If it is not in the OMS or the accounts system, it did not happen. Every item below requires a system record, a signed document, or a written report."*
 - **Tech Stack:**
   - **Edge Runtime:** Cloudflare Workers with Hono Framework.
   - **Relational Persistence:** Cloudflare D1 (Serverless SQLite).
@@ -22,97 +29,157 @@ Every visit produces a written report with scores, photos, findings, and an acti
 
 ---
 
-## 📑 Complete Inspection Structure (Parts A — Q)
+## 📋 Module 1: Director's Operating Checklist
 
-1. **PART A — Pre-Visit Preparation (2 Days Before):** 12 preparatory tasks (unannounced arrival policy, financials, OMS, HR, academic data, surprise items, logistics).
-2. **PART B — Arrival and First Impressions (Unannounced Walk-Through):** 12 scored observation checks + mandatory photo uploads (Entrance, Notice Board, Cash Storage, Deficiencies, Strengths).
-3. **PART C — Financial Controls and Cash:** 18 audit checks with physical evidence requirements (cash counts, receipt books, bank slips, dual signatures, segregation of duties).
-4. **PART D — Accounts and System Adoption:** 15 checks on OMS daily updates, timestamps, 2FA, backups, and user access.
-5. **PART E — Staff Performance and Welfare:** 15 checks on attendance, contracts, timely payroll, grievances, and safeguarding.
-6. **PART F — Academic Quality (Institute and College Branches):** 15 checks on curriculum alignment, exams, lesson plans, and parent communication (toggleable per branch).
-7. **PART G — Masjid Operations (Masjid Branch):** 15 checks on prayer times, wudu cleanliness, donation box dual-counting, and Zakat segregation (toggleable per branch).
-8. **PART H — Physical Assets and Infrastructure:** 15 checks on asset register matching, IT, generator/UPS, building condition, and repair identification.
-9. **PART I — Procurement and Vendors:** 12 checks on agreed rates, 3-quotes threshold, advance aging, and delivery verification.
-10. **PART J — Compliance, Safety and Security:** 15 checks on tax filings, fire safety, CCTV, visitor logs, and guard alertness.
-11. **PART K — Community and Donor Relations:** 8 checks on donor acknowledgments, community standing, and welfare records.
-12. **PART L — Strengths, Weaknesses, and Recommendations:**
-    - Strengths (Pros) & Replication strategy
-    - Weaknesses (Cons) with Severity (Critical/High/Medium/Low), Root causes, and Immediate actions
-    - Upgrades needed (Cost, Priority, Deadline, Responsible)
-    - Downgrades or savings identified
-    - Improvements recommended
-    - Deficiencies found with Legal/Policy breach classification
-13. **PART M — Staff and Student Interviews (Private):** 10 structured questions conducted privately across 3 Staff and 3 Students.
-14. **PART N — Post-Visit Actions (Within 48 Hours):** 12 time-bound actions with deadlines (24h, Same day, 48h, Immediately, 7 days).
-15. **PART O — Branch Scorecard:** Real-time automatic calculation of scores across all sections, maximum denominator adaptation, overall percentage, and rating scale:
-    - **90–100%:** Excellent — model branch, share practices
-    - **75–89%:** Good — minor improvements needed
-    - **60–74%:** Satisfactory — action plan required
-    - **40–59%:** Weak — immediate intervention, re-visit in 4 weeks
-    - **Below 40%:** Critical — escalate to board, consider management change
-16. **PART P — Director's Sign-Off:** Formal certification statement, digital touch/stylus signature pad for Director and Branch Manager, and OMS filing details.
-17. **PART Q — Branch Visit Rotation Schedule (Annual):** Matrix view tracking visits planned vs completed across Jan—Dec to ensure the 24-visit minimum quota is met.
+### 1. Target Time Allocation (48–50 Hours/Week)
+- **Financial oversight and controls:** 25% (12 hrs/wk)
+- **Staff leadership and campus oversight:** 20% (10 hrs/wk)
+- **Donor, community and masjid relations:** 15% (7 hrs/wk)
+- **Academic and course oversight:** 10% (5 hrs/wk)
+- **Systems enforcement (OMS, accounts):** 10% (5 hrs/wk)
+- **Compliance, legal, audit, tax:** 10% (5 hrs/wk)
+- **Strategy, board, planning:** 10% (5 hrs/wk)
+
+### 2. Daily Checklist (16 Verifiable Proof Points)
+- **Morning (before 9:30 AM):**
+  1. Review OMS overnight alerts (>24h critical escalation).
+  2. Check cash position across all banks (>PKR 50,000 variance escalation).
+  3. Verify masjid and counter collections banked (<24h banking rule).
+  4. Review urgent email/WhatsApp (Norway, donors, Ustadha's office).
+  5. 15-minute HQ morning huddle & attendance.
+  6. Confirm security/outage alert clearance.
+- **Midday:**
+  7. Approve purchase requests within limit (forward above-limit to board).
+  8. Vendor advance ageing review (>30d delivery chase).
+  9. Rotating unit transaction spot-check.
+  10. Handle walk-ins, grievances, and donor relations.
+- **Afternoon:**
+  11. Personally close 3–5 open OMS work items.
+  12. Review escalated student/fee/scholarship concessions.
+  13. Sign cheques & payment approvals as second signatory (never sole).
+- **End of Day:**
+  14. Verify daily OMS updates submitted by all staff.
+  15. Log own daily executive activity in OMS.
+  16. Inbox zero or tomorrow's prioritized flags.
+
+### 3. Weekly Checklist (Fixed Rhythm)
+- **Monday:** Campus managers leadership meeting, OMS weekly summary, HR attendance review.
+- **Tuesday:** Finance review with accountant (bank rec, cash flow, receivables), tax/withholding calendar.
+- **Wednesday:** Rotating campus inspection walk-through.
+- **Thursday:** Major donor calls (5 donors), procurement/vendor review.
+- **Friday:** Jumu'ah at Masjid, donation counts review, Zakat & restricted fund check.
+- **Saturday:** Academic review, system adoption check, personal top-5 weekly planning.
+- **Sunday:** Rest day (emergency contact only).
+
+### 4. Biweekly Checklist
+1. Payroll review & dual approval before processing.
+2. Vendor payment run approval.
+3. Deep-dive unit audit (Al Baraka → Punjab College → Institute → Masjid → HQ → Norway).
+4. Staff 1-on-1 check-ins (half the team every 2 weeks).
+5. Overdue receivables chase instructions.
+6. Norway coordination call (compliance, transfers, GDPR).
+7. Ustadha's tour & event check.
+8. System adoption metrics enforcement.
+9. Legal, tax, and regulatory review.
+10. Physical cash & petty cash count audit.
+
+### 5. Monthly Checklist (Strict Deadlines)
+- **By 7th:** Month-end close sign-off, bank reconciliations for all accounts.
+- **By 10th:** Donation & Zakat segregation report, fee collection report, vendor advance ageing.
+- **By 12th:** Budget vs actual variance analysis (>10% written explanation).
+- **By 15th:** Board report submission, compliance calendar, 3-month cash flow forecast.
+- **By 20th:** Campus manager performance reviews, course revenue reports.
+- **By 25th:** Staff monthly check-ins, data protection log, HQ petty cash audit.
+- **By 28th:** Fixed asset register check, security review, policy approvals, grievance review.
+
+### 6. Quarterly & Yearly Governance
+- **Quarterly:** Board presentations, risk register updates, external audit readiness, budget reforecasts, system developer performance review, Shariah advisor sign-off.
+- **Yearly Calendar:** Pakistan Fiscal Year (July–June) & Norway Calendar Year synchronization.
+- **Annual Duties:** External audit sign-off, AGM, board elections, strategy refresh, disaster recovery test, salary benchmarking, DPIA review.
+
+### 7. Director's Performance Scorecard (14 KPIs)
+1. Month-end close completed by 7th (Target: 12/12 months)
+2. Bank reconciliations current (Target: 100%)
+3. Zakat and restricted funds segregated (Target: 100%)
+4. Audit findings (Target: Zero material findings)
+5. Fee collection rate (Target: Improvement over baseline)
+6. Donation growth (Target: Positive YoY)
+7. Vendor advance recovery (Target: 90% in 60 days)
+8. OMS daily update compliance (Target: >95% staff)
+9. Purchase approvals within limit and on time (Target: 100%)
+10. Critical compliance findings (Target: Zero)
+11. Staff turnover (Target: Below sector average)
+12. Campus visits completed (Target: 100% of schedule, min 24/yr)
+13. Board reports submitted on time (Target: 12/12)
+14. Data breaches (Target: Zero)
+
+### 8. Delegation Rules (10 Things The Director Must NOT Do)
+1. Never be sole signatory on any payment. Dual signature always.
+2. Never enter transactions in accounts (accountant posts, Director approves).
+3. Never handle cash directly.
+4. Never approve a payment without invoice, PO, and delivery confirmation.
+5. Never approve own expense/reimbursement (board approval required).
+6. Never negotiate developer contract alone.
+7. Never hold sole credentials to bank, hosting, or gateway accounts.
+8. Never instruct staff verbally on financial matters (OMS written instructions only).
+9. Never bypass OMS for task assignments or approvals.
+10. Never let a month close without signed financial statements.
 
 ---
 
-## 🔐 Default Access Accounts
+## 📑 Module 2: Branch Visit Checklist (Parts A — Q)
 
-When the database is first initialized, the following demo accounts are available:
+- **Part A:** Pre-Visit Preparation (12 tasks, unannounced protocol)
+- **Part B:** Arrival & First Impressions (12 scored observations + photo gallery)
+- **Part C:** Financial Controls & Cash (18 checks with evidence)
+- **Part D:** Accounts & System Adoption (15 checks)
+- **Part E:** Staff Performance & Welfare (15 checks)
+- **Part F:** Academic Quality (15 checks, toggleable)
+- **Part G:** Masjid Operations (15 checks, toggleable)
+- **Part H:** Physical Assets & Infrastructure (15 checks)
+- **Part I:** Procurement & Vendors (12 checks)
+- **Part J:** Compliance, Safety & Security (15 checks)
+- **Part K:** Community & Donor Relations (8 checks)
+- **Part L:** Key Findings (Strengths, Weaknesses, Upgrades, Downgrades, Improvements, Deficiencies)
+- **Part M:** Private Staff & Student Interviews (10 structured questions)
+- **Part N:** Post-Visit Actions (12 time-bound actions within 48h)
+- **Part O:** Live Scorecard & Rating Badge
+- **Part P:** Director & Manager Touch/Stylus Signatures & OMS Reference
+- **Part Q:** Annual Rotation Schedule Matrix (Tracking 24-visit minimum quota)
+
+---
+
+## 🔐 Default Sign-In Accounts
 
 | Role | Username | Password | Access Level |
 |---|---|---|---|
-| **Director** | `director` | `NurulQuran2026!` | Full Admin, Sign-off, User Management, Schedule Edit |
+| **Director** | `director` | `NurulQuran2026!` | Full Admin, Sign-off, Operating Log, Schedule, Users |
 | **Auditor** | `auditor` | `Auditor2026!` | Inspection entry, photos, findings, schedule update |
 | **Branch Manager** | `manager` | `Manager2026!` | View branch reports, sign acknowledgment |
-| **Board Member** | `board` | `Board2026!` | Read-only executive review |
+| **Board Member** | `board` | `Board2026!` | Read-only executive review & scorecard |
 
 ---
 
-## 🚀 Running Locally
+## 🚀 Commands & Deployment
 
 ```bash
-# 1. Install dependencies
+# Install dependencies
 npm install
 
-# 2. Initialize local D1 database schema
+# Initialize local database
 npm run d1:init
 
-# 3. Start Cloudflare development server
+# Start local server
 npm run dev
-```
 
-Visit `http://localhost:8787` in your browser.
-
----
-
-## ☁️ Deploying to Cloudflare
-
-```bash
-# 1. Create your remote D1 database on Cloudflare
-npx wrangler d1 create director_checklist_db
-
-# 2. Update wrangler.jsonc with the returned database_id
-
-# 3. Run migrations on the remote database
-npm run d1:init:remote
-
-# 4. Deploy worker and static assets
+# Deploy to Cloudflare Workers & D1
 npm run deploy
 ```
 
 ---
 
-## 🔗 Share Option (Inside Admin)
-
-Directors and Auditors can click **"🔗 Share Link"** on any inspection report:
-- Generate tokenized read-only links with custom expiration (7 days, 30 days, 90 days, or permanent).
-- Copy the public executive presentation link (`/shared.html?token=...`).
-- Copy pre-formatted WhatsApp briefing with scores and direct report URL.
-- Revoke active share tokens instantly at any time.
-
----
-
 ## 📄 Footer Versioning & Compliance
 
-- Current Version: `v1.0.1 (updated 2026-10-14 11:08)`
-- Maintained per NurulQuran Pakistan Governance Guidelines.
+- **Current Version:** `v1.0.2 (updated 2026-10-14 11:21)`
+- **Cloudflare Endpoint:** [https://checklist-director-nq.nurulquran.workers.dev](https://checklist-director-nq.nurulquran.workers.dev)
+- **GitHub Repository:** [https://github.com/islamwell/checklist-director-nq](https://github.com/islamwell/checklist-director-nq)

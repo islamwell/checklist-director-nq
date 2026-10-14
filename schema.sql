@@ -1,4 +1,4 @@
--- NurulQuran Pakistan - Director's Branch Visit System Schema
+-- NurulQuran Pakistan - Director's Inspection & Operating System Schema
 
 CREATE TABLE IF NOT EXISTS users (
   id TEXT PRIMARY KEY,
@@ -72,8 +72,38 @@ CREATE TABLE IF NOT EXISTS rotation_schedule (
   updated_at TEXT NOT NULL
 );
 
+-- Director Operating Checklist Tables
+CREATE TABLE IF NOT EXISTS operating_logs (
+  id TEXT PRIMARY KEY,
+  log_date TEXT NOT NULL,
+  log_type TEXT NOT NULL DEFAULT 'daily', -- 'daily', 'weekly', 'biweekly', 'monthly', 'quarterly', 'yearly'
+  data_json TEXT NOT NULL,
+  completed_count INTEGER DEFAULT 0,
+  total_count INTEGER DEFAULT 0,
+  signed_off INTEGER DEFAULT 0,
+  signed_at TEXT,
+  created_by TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS director_kpis (
+  id TEXT PRIMARY KEY,
+  year INTEGER NOT NULL,
+  kpi_num INTEGER NOT NULL,
+  kpi TEXT NOT NULL,
+  target TEXT NOT NULL,
+  measured_by TEXT NOT NULL,
+  current_value TEXT,
+  status TEXT NOT NULL DEFAULT 'on_track', -- 'on_track', 'attention', 'critical', 'achieved'
+  notes TEXT,
+  updated_at TEXT NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_visits_branch ON visits(branch);
 CREATE INDEX IF NOT EXISTS idx_visits_date ON visits(visit_date);
 CREATE INDEX IF NOT EXISTS idx_share_tokens ON share_tokens(token);
 CREATE INDEX IF NOT EXISTS idx_sessions_token ON sessions(token);
 CREATE INDEX IF NOT EXISTS idx_schedule_year_branch ON rotation_schedule(year, branch);
+CREATE INDEX IF NOT EXISTS idx_operating_logs_date_type ON operating_logs(log_date, log_type);
+CREATE INDEX IF NOT EXISTS idx_director_kpis_year ON director_kpis(year);
