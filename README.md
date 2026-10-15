@@ -16,8 +16,7 @@ This integrated portal combines two core executive governance frameworks:
   - Each branch visited at least once every 8 weeks.
   - HQ visited monthly.
   - Minimum quota: **24 documented visits per year**.
-- **Director Compensation & Responsibility:**
-  - At **PKR 500,000/month (PKR 6,000,000/year)**, the Director must control, protect, or generate a multiple of that amount.
+- **Director Governance & Accountability:**
   - **Rule:** *"If it is not in the OMS or the accounts system, it did not happen. Every item below requires a system record, a signed document, or a written report."*
 - **Tech Stack:**
   - **Edge Runtime:** Cloudflare Workers with Hono Framework.
@@ -180,6 +179,6 @@ npm run deploy
 
 ## 📄 Footer Versioning & Compliance
 
-- **Current Version:** `v1.0.2 (updated 2026-10-14 11:21)`
+- **Current Version:** `v1.0.3 (updated 2026-10-15 14:56)`
 - **Cloudflare Endpoint:** [https://checklist-director-nq.nurulquran.workers.dev](https://checklist-director-nq.nurulquran.workers.dev)
 - **GitHub Repository:** [https://github.com/islamwell/checklist-director-nq](https://github.com/islamwell/checklist-director-nq)
