@@ -264,6 +264,44 @@ a:hover {
   background: var(--primary-hover);
 }
 
+/* Animated Gradient Action Button */
+@keyframes animatedGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.btn-gradient-animated {
+  background: linear-gradient(120deg, #059669, #0284c7, #7c3aed, #d97706, #059669);
+  background-size: 300% 300%;
+  animation: animatedGradient 5s ease infinite;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.45);
+  transition: all 0.25s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  letter-spacing: 0.01em;
+}
+
+.btn-gradient-animated:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.65);
+  filter: brightness(1.1);
+}
+
+.btn-gradient-animated:active {
+  transform: translateY(0) scale(0.98);
+}
+
 .btn-secondary {
   background: #ffffff;
   border-color: var(--border-light);

@@ -116,6 +116,20 @@ function setupEventListeners() {
     el.newVisitModal.classList.remove('open');
   });
 
+  // Branch select custom campus toggle
+  const branchSelect = document.getElementById('new-visit-branch');
+  const customBranchGroup = document.getElementById('new-visit-custom-branch-group');
+  const customBranchInput = document.getElementById('new-visit-custom-branch');
+  branchSelect?.addEventListener('change', () => {
+    const isOther = branchSelect.value === 'Other Campuses' || branchSelect.value === 'Other Campus';
+    if (customBranchGroup) {
+      customBranchGroup.style.display = isOther ? 'block' : 'none';
+    }
+    if (isOther && customBranchInput) {
+      customBranchInput.focus();
+    }
+  });
+
   document.getElementById('form-new-visit')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     await handleCreateVisit();
@@ -362,11 +376,32 @@ function openNewVisitModal() {
   if (dateInput) {
     dateInput.value = new Date().toISOString().substring(0, 10);
   }
+  const branchSelect = document.getElementById('new-visit-branch');
+  const customBranchGroup = document.getElementById('new-visit-custom-branch-group');
+  const customBranchInput = document.getElementById('new-visit-custom-branch');
+  if (customBranchGroup && branchSelect) {
+    const isOther = branchSelect.value === 'Other Campuses' || branchSelect.value === 'Other Campus';
+    customBranchGroup.style.display = isOther ? 'block' : 'none';
+    if (!isOther && customBranchInput) {
+      customBranchInput.value = '';
+    }
+  }
   el.newVisitModal.classList.add('open');
 }
 
 async function handleCreateVisit() {
-  const branch = document.getElementById('new-visit-branch').value;
+  const branchSelect = document.getElementById('new-visit-branch');
+  let branch = branchSelect?.value || 'HQ Jauharabad';
+  if (branch === 'Other Campuses' || branch === 'Other Campus') {
+    const customBranch = document.getElementById('new-visit-custom-branch')?.value?.trim();
+    if (!customBranch) {
+      alert('Please enter the name of the campus or unit.');
+      document.getElementById('new-visit-custom-branch')?.focus();
+      return;
+    }
+    branch = customBranch;
+  }
+
   const visit_date = document.getElementById('new-visit-date').value;
   const visit_type = document.getElementById('new-visit-type').value;
   const accompanied_by = document.getElementById('new-visit-accompanied').value;

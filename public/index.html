@@ -81,7 +81,7 @@
             <h2 class="card-title">Director's Overview & Compliance</h2>
             <p class="card-subtitle">Annual inspection quota: Minimum 24 documented visits per year. HQ visited monthly, branches every 8 weeks.</p>
           </div>
-          <button type="button" class="btn btn-primary" id="btn-new-visit">＋ Start New Inspection</button>
+          <button type="button" class="btn btn-gradient-animated" id="btn-new-visit">＋ Start New Inspection</button>
         </div>
 
         <div class="stats-grid">
@@ -170,7 +170,7 @@
             <h2 class="card-title">Branch Inspection Reports</h2>
             <p class="card-subtitle">Every visit produces a written report with scores, photos, findings, and an action plan.</p>
           </div>
-          <button type="button" class="btn btn-primary" onclick="window.document.getElementById('btn-new-visit').click()">＋ New Inspection</button>
+          <button type="button" class="btn btn-gradient-animated" onclick="window.document.getElementById('btn-new-visit').click()">＋ New Inspection</button>
         </div>
 
         <div class="filters-bar">
@@ -1279,7 +1279,7 @@
           <strong>NurulQuran Pakistan</strong> — Confidential Inspection Management System
         </div>
         <div>
-          <span class="version-badge">v1.0.4 (updated 2026-10-28 20:15)</span>
+          <span class="version-badge">v1.0.5 (updated 2026-10-28 20:18)</span>
         </div>
       </div>
     </footer>
@@ -1303,6 +1303,13 @@
               <option value="Masjid">Masjid</option>
               <option value="Other Campuses">Other Campuses</option>
             </select>
+          </div>
+
+          <div id="new-visit-custom-branch-group" style="margin-bottom:1rem; display:none;">
+            <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.35rem;">
+              Campus / Unit Name <span style="color:#ef4444;">*</span>
+            </label>
+            <input type="text" id="new-visit-custom-branch" class="form-control" style="width:100%;" placeholder="Enter name of campus or unit...">
           </div>
 
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
