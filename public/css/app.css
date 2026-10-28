@@ -126,6 +126,14 @@ a:hover {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.nav-links::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-tab-btn {
@@ -141,6 +149,7 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  flex-shrink: 0;
 }
 
 .nav-tab-btn:hover {
@@ -796,6 +805,47 @@ td input[type="checkbox"] {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.75rem;
   border: 1px solid #334155;
+}
+
+.op-header-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.period-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.825rem;
+  font-weight: 600;
+}
+
+/* Mobile & Tablet Responsive Adjustments */
+@media (max-width: 860px) {
+  .header-inner {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .nav-links {
+    order: 3;
+    width: 100%;
+    padding-bottom: 3px;
+  }
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .op-header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }
 
 /* Print Stylesheet for PDF & Official Filing */

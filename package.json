@@ -1,6 +1,6 @@
 {
   "name": "checklist-director-nq",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Director's Branch Visit Checklist & Inspection System for NurulQuran Pakistan",
   "main": "src/index.ts",
   "type": "module",

@@ -958,15 +958,30 @@
 
         <!-- 3. WEEKLY CHECKLIST -->
         <div class="card" id="op-sec-weekly">
-          <h3 class="card-title" style="margin-bottom:0.5rem;">3. WEEKLY CHECKLIST (FIXED RHYTHM)</h3>
-          <p class="card-subtitle" style="margin-bottom:1rem;">Structured operational schedule for executive control.</p>
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">3. WEEKLY CHECKLIST (FIXED RHYTHM)</h3>
+              <p class="card-subtitle">Structured operational schedule for executive control. Autosaved per week.</p>
+            </div>
+            <div class="op-header-actions">
+              <span id="op-weekly-progress-badge" class="badge badge-satisfactory">0 / 12 (0%)</span>
+              <div class="period-pill">
+                <button type="button" class="btn btn-sm btn-secondary" id="btn-op-prev-week" title="Previous Week">◀</button>
+                <span id="op-weekly-label" style="font-size:0.85rem; font-weight:600; padding:0 0.35rem;">2026-W44</span>
+                <button type="button" class="btn btn-sm btn-secondary" id="btn-op-next-week" title="Next Week">▶</button>
+              </div>
+              <button type="button" class="btn btn-sm btn-secondary" id="btn-op-this-week">This Week</button>
+              <button type="button" class="btn btn-sm btn-primary" id="btn-save-weekly">💾 Save</button>
+            </div>
+          </div>
           <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr>
-                  <th style="width:110px;">Day</th>
-                  <th>Action</th>
-                  <th>Evidence</th>
+                  <th style="width:100px;">Day</th>
+                  <th>Action & Required Evidence</th>
+                  <th style="width:70px; text-align:center;">Done</th>
+                  <th style="width:250px;">Evidence / Notes / OMS #</th>
                 </tr>
               </thead>
               <tbody id="op-weekly-tbody"></tbody>
@@ -976,15 +991,30 @@
 
         <!-- 4. BIWEEKLY CHECKLIST -->
         <div class="card" id="op-sec-biweekly">
-          <h3 class="card-title" style="margin-bottom:0.5rem;">4. BIWEEKLY CHECKLIST</h3>
-          <p class="card-subtitle" style="margin-bottom:1rem;">Fortnightly financial controls and deep-dive audits.</p>
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">4. BIWEEKLY CHECKLIST</h3>
+              <p class="card-subtitle">Fortnightly financial controls and deep-dive audits. Autosaved per fortnight.</p>
+            </div>
+            <div class="op-header-actions">
+              <span id="op-biweekly-progress-badge" class="badge badge-satisfactory">0 / 5 (0%)</span>
+              <div class="period-pill">
+                <button type="button" class="btn btn-sm btn-secondary" id="btn-op-prev-biweek" title="Previous Fortnight">◀</button>
+                <span id="op-biweekly-label" style="font-size:0.85rem; font-weight:600; padding:0 0.35rem;">2026-BW22</span>
+                <button type="button" class="btn btn-sm btn-secondary" id="btn-op-next-biweek" title="Next Fortnight">▶</button>
+              </div>
+              <button type="button" class="btn btn-sm btn-secondary" id="btn-op-this-biweek">Current Fortnight</button>
+              <button type="button" class="btn btn-sm btn-primary" id="btn-save-biweekly">💾 Save</button>
+            </div>
+          </div>
           <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr>
-                  <th style="width:35px;">#</th>
-                  <th>Action</th>
-                  <th>Evidence Required</th>
+                  <th style="width:35px; text-align:center;">#</th>
+                  <th>Action & Evidence Required</th>
+                  <th style="width:70px; text-align:center;">Done</th>
+                  <th style="width:250px;">Evidence / Notes / OMS #</th>
                 </tr>
               </thead>
               <tbody id="op-biweekly-tbody"></tbody>
@@ -994,16 +1024,31 @@
 
         <!-- 5. MONTHLY CHECKLIST -->
         <div class="card" id="op-sec-monthly">
-          <h3 class="card-title" style="margin-bottom:0.5rem;">5. MONTHLY CHECKLIST</h3>
-          <p class="card-subtitle" style="margin-bottom:1rem;">Strict deadlines for month-end close, financial pack, and compliance filings.</p>
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">5. MONTHLY CHECKLIST</h3>
+              <p class="card-subtitle">Strict deadlines for month-end close, financial pack, and compliance filings. Autosaved per month.</p>
+            </div>
+            <div class="op-header-actions">
+              <span id="op-monthly-progress-badge" class="badge badge-satisfactory">0 / 10 (0%)</span>
+              <div class="period-pill">
+                <button type="button" class="btn btn-sm btn-secondary" id="btn-op-prev-month" title="Previous Month">◀</button>
+                <input type="month" id="op-monthly-picker" class="form-control" style="font-size:0.8rem; width:135px; padding:0.2rem 0.4rem; height:28px;">
+                <button type="button" class="btn btn-sm btn-secondary" id="btn-op-next-month" title="Next Month">▶</button>
+              </div>
+              <button type="button" class="btn btn-sm btn-secondary" id="btn-op-this-month">This Month</button>
+              <button type="button" class="btn btn-sm btn-primary" id="btn-save-monthly">💾 Save</button>
+            </div>
+          </div>
           <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr>
-                  <th style="width:35px;">#</th>
-                  <th>Action</th>
-                  <th>Evidence Required</th>
-                  <th style="width:120px;">Deadline</th>
+                  <th style="width:35px; text-align:center;">#</th>
+                  <th>Action & Evidence Required</th>
+                  <th style="width:110px;">Deadline</th>
+                  <th style="width:70px; text-align:center;">Done</th>
+                  <th style="width:250px;">Evidence / Notes / OMS #</th>
                 </tr>
               </thead>
               <tbody id="op-monthly-tbody"></tbody>
@@ -1013,15 +1058,35 @@
 
         <!-- 6. QUARTERLY CHECKLIST -->
         <div class="card" id="op-sec-quarterly">
-          <h3 class="card-title" style="margin-bottom:0.5rem;">6. QUARTERLY CHECKLIST</h3>
-          <p class="card-subtitle" style="margin-bottom:1rem;">Board presentation, risk register update, and Shariah audit sign-off.</p>
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">6. QUARTERLY CHECKLIST</h3>
+              <p class="card-subtitle">Board presentation, risk register update, and Shariah audit sign-off. Autosaved per quarter.</p>
+            </div>
+            <div class="op-header-actions">
+              <span id="op-quarterly-progress-badge" class="badge badge-satisfactory">0 / 10 (0%)</span>
+              <div class="period-pill">
+                <button type="button" class="btn btn-sm btn-secondary" id="btn-op-prev-quarter" title="Previous Quarter">◀</button>
+                <span id="op-quarterly-label" style="font-size:0.85rem; font-weight:600; padding:0 0.35rem;">2026-Q4</span>
+                <button type="button" class="btn btn-sm btn-secondary" id="btn-op-next-quarter" title="Next Quarter">▶</button>
+              </div>
+              <div style="display:inline-flex; gap:0.25rem;">
+                <button type="button" class="btn btn-sm btn-secondary btn-quarter-select" data-q="Q1">Q1</button>
+                <button type="button" class="btn btn-sm btn-secondary btn-quarter-select" data-q="Q2">Q2</button>
+                <button type="button" class="btn btn-sm btn-secondary btn-quarter-select" data-q="Q3">Q3</button>
+                <button type="button" class="btn btn-sm btn-secondary btn-quarter-select" data-q="Q4">Q4</button>
+              </div>
+              <button type="button" class="btn btn-sm btn-primary" id="btn-save-quarterly">💾 Save</button>
+            </div>
+          </div>
           <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr>
-                  <th style="width:35px;">#</th>
-                  <th>Action</th>
-                  <th>Evidence</th>
+                  <th style="width:35px; text-align:center;">#</th>
+                  <th>Action & Evidence</th>
+                  <th style="width:70px; text-align:center;">Done</th>
+                  <th style="width:250px;">Evidence / Notes / OMS #</th>
                 </tr>
               </thead>
               <tbody id="op-quarterly-tbody"></tbody>
@@ -1031,30 +1096,47 @@
 
         <!-- 7. YEARLY CALENDAR & ANNUAL DUTIES -->
         <div class="card" id="op-sec-yearly">
-          <h3 class="card-title" style="margin-bottom:0.5rem;">7. YEARLY CALENDAR (PAKISTAN FISCAL YEAR: JULY–JUNE; NORWAY: CALENDAR YEAR)</h3>
-          <p class="card-subtitle" style="margin-bottom:1rem;">Annual calendar of duties aligned with Pakistan and Norway governance cycles.</p>
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">7. YEARLY CALENDAR & ANNUAL DUTIES</h3>
+              <p class="card-subtitle">Annual calendar aligned with Pakistan FY (July–June) and Norway calendar year. Autosaved per year.</p>
+            </div>
+            <div class="op-header-actions">
+              <span id="op-yearly-progress-badge" class="badge badge-satisfactory">0 / 26 (0%)</span>
+              <div class="period-pill">
+                <button type="button" class="btn btn-sm btn-secondary" id="btn-op-prev-year" title="Previous Year">◀</button>
+                <span id="op-yearly-label" style="font-size:0.85rem; font-weight:600; padding:0 0.5rem;">2026</span>
+                <button type="button" class="btn btn-sm btn-secondary" id="btn-op-next-year" title="Next Year">▶</button>
+              </div>
+              <button type="button" class="btn btn-sm btn-secondary" id="btn-op-this-year">This Year</button>
+              <button type="button" class="btn btn-sm btn-primary" id="btn-save-yearly">💾 Save</button>
+            </div>
+          </div>
           
+          <h4 style="font-size:0.95rem; color:#0369a1; margin-bottom:0.5rem;">Part A: 12 Monthly Strategic Roadmaps</h4>
           <div class="table-responsive" style="margin-bottom:1.5rem;">
             <table class="table">
               <thead>
                 <tr>
                   <th style="width:110px;">Month</th>
-                  <th>Director's Annual Duties</th>
-                  <th>Evidence</th>
+                  <th>Director's Strategic Duties & Evidence</th>
+                  <th style="width:70px; text-align:center;">Done</th>
+                  <th style="width:250px;">Evidence / Notes / OMS #</th>
                 </tr>
               </thead>
               <tbody id="op-yearly-cal-tbody"></tbody>
             </table>
           </div>
 
-          <h4 style="font-size:1rem; margin-bottom:0.5rem;">Annual One-Time Duties (14 Items)</h4>
+          <h4 style="font-size:0.95rem; color:#d97706; margin-bottom:0.5rem;">Part B: Annual One-Time Governance Duties (14 Items)</h4>
           <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr>
-                  <th style="width:35px;">#</th>
-                  <th>Action</th>
-                  <th>Evidence</th>
+                  <th style="width:35px; text-align:center;">#</th>
+                  <th>Action & Evidence Required</th>
+                  <th style="width:70px; text-align:center;">Done</th>
+                  <th style="width:250px;">Evidence / Notes / OMS #</th>
                 </tr>
               </thead>
               <tbody id="op-yearly-duties-tbody"></tbody>
@@ -1197,7 +1279,7 @@
           <strong>NurulQuran Pakistan</strong> — Confidential Inspection Management System
         </div>
         <div>
-          <span class="version-badge">v1.0.3 (updated 2026-10-15 14:56)</span>
+          <span class="version-badge">v1.0.4 (updated 2026-10-28 20:15)</span>
         </div>
       </div>
     </footer>

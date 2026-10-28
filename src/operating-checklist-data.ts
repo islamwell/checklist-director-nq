@@ -200,3 +200,55 @@ export const ACCOUNTABILITY_TERMS = [
   'The board reviews this checklist quarterly and the Director’s scorecard annually.',
   'The Director may propose changes to the checklist; the board approves them in writing.'
 ];
+
+export function getDefaultSectionData(type: string): any {
+  switch (type) {
+    case 'daily':
+      return JSON.parse(JSON.stringify(DAILY_CHECKLIST_TEMPLATE));
+    case 'weekly':
+      return WEEKLY_CHECKLIST.map(w => ({ ...w, done: false, notes: '', omsRef: '' }));
+    case 'biweekly':
+      return BIWEEKLY_CHECKLIST.map(b => ({ ...b, done: false, notes: '', omsRef: '' }));
+    case 'monthly':
+      return MONTHLY_CHECKLIST.map(m => ({ ...m, done: false, notes: '', omsRef: '' }));
+    case 'quarterly':
+      return QUARTERLY_CHECKLIST.map(q => ({ ...q, done: false, notes: '', omsRef: '' }));
+    case 'yearly':
+      return {
+        calendar: YEARLY_CALENDAR.map(y => ({ ...y, done: false, notes: '', omsRef: '' })),
+        annualDuties: ANNUAL_ONE_TIME_DUTIES.map(d => ({ ...d, done: false, notes: '', omsRef: '' }))
+      };
+    default:
+      return [];
+  }
+}
+
+export function computeSectionCounts(type: string, data: any): { completedCount: number; totalCount: number } {
+  let completedCount = 0;
+  let totalCount = 0;
+
+  if (!data) return { completedCount, totalCount };
+
+  if (type === 'daily') {
+    ['morning', 'midday', 'afternoon', 'endOfDay'].forEach((sec) => {
+      if (Array.isArray(data[sec])) {
+        totalCount += data[sec].length;
+        completedCount += data[sec].filter((t: any) => t.done).length;
+      }
+    });
+  } else if (type === 'yearly') {
+    if (Array.isArray(data.calendar)) {
+      totalCount += data.calendar.length;
+      completedCount += data.calendar.filter((t: any) => t.done).length;
+    }
+    if (Array.isArray(data.annualDuties)) {
+      totalCount += data.annualDuties.length;
+      completedCount += data.annualDuties.filter((t: any) => t.done).length;
+    }
+  } else if (Array.isArray(data)) {
+    totalCount = data.length;
+    completedCount = data.filter((t: any) => t.done).length;
+  }
+
+  return { completedCount, totalCount };
+}

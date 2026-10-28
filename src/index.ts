@@ -14,7 +14,9 @@ import {
   ANNUAL_ONE_TIME_DUTIES,
   DIRECTOR_KPIS,
   DELEGATION_RULES,
-  ACCOUNTABILITY_TERMS
+  ACCOUNTABILITY_TERMS,
+  getDefaultSectionData,
+  computeSectionCounts
 } from './operating-checklist-data';
 
 const app = new Hono<{ Bindings: Env; Variables: { user?: User } }>();
@@ -759,6 +761,130 @@ app.get('/api/operating/data', (c) => {
     delegationRules: DELEGATION_RULES,
     accountabilityTerms: ACCOUNTABILITY_TERMS
   });
+});
+
+// Get operating section log for any period and type
+app.get('/api/operating/section', async (c) => {
+  const db = c.env.DB;
+  const type = c.req.query('type') || 'daily';
+  const period = c.req.query('period') || (type === 'daily' ? new Date().toISOString().substring(0, 10) : 'current');
+
+  const existing = await db.prepare(
+    'SELECT * FROM operating_logs WHERE log_date = ? AND log_type = ?'
+  ).bind(period, type).first();
+
+  if (existing) {
+    try {
+      return c.json({
+        type,
+        period,
+        log: {
+          ...existing,
+          data: JSON.parse((existing as any).data_json)
+        }
+      });
+    } catch {
+      // Fallback
+    }
+  }
+
+  const defaultData = getDefaultSectionData(type);
+  const { totalCount } = computeSectionCounts(type, defaultData);
+
+  return c.json({
+    type,
+    period,
+    log: {
+      id: null,
+      log_date: period,
+      log_type: type,
+      completed_count: 0,
+      total_count: totalCount,
+      signed_off: 0,
+      data: defaultData
+    }
+  });
+});
+
+// Save or update operating section (daily, weekly, biweekly, monthly, quarterly, yearly)
+app.post('/api/operating/section', async (c) => {
+  const user = c.get('user');
+  const db = c.env.DB;
+  const body = await c.req.json<{
+    type: string;
+    period: string;
+    data: any;
+    signed_off?: boolean;
+  }>();
+
+  if (!body.type || !body.period || body.data === undefined) {
+    return c.json({ error: 'Type, period, and data are required' }, 400);
+  }
+
+  const now = new Date().toISOString();
+  const { completedCount, totalCount } = computeSectionCounts(body.type, body.data);
+
+  const existing = await db.prepare(
+    'SELECT id FROM operating_logs WHERE log_date = ? AND log_type = ?'
+  ).bind(body.period, body.type).first<{ id: string }>();
+
+  if (existing) {
+    await db.prepare(`
+      UPDATE operating_logs SET
+        data_json = ?,
+        completed_count = ?,
+        total_count = ?,
+        signed_off = ?,
+        signed_at = CASE WHEN ? = 1 THEN COALESCE(signed_at, ?) ELSE signed_at END,
+        updated_at = ?
+      WHERE id = ?
+    `).bind(
+      JSON.stringify(body.data),
+      completedCount,
+      totalCount,
+      body.signed_off ? 1 : 0,
+      body.signed_off ? 1 : 0,
+      now,
+      now,
+      existing.id
+    ).run();
+
+    return c.json({
+      success: true,
+      id: existing.id,
+      completedCount,
+      totalCount,
+      percent: totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
+    });
+  } else {
+    const id = 'op_' + generateToken().substring(0, 12);
+    await db.prepare(`
+      INSERT INTO operating_logs (
+        id, log_date, log_type, data_json, completed_count, total_count,
+        signed_off, signed_at, created_by, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      id,
+      body.period,
+      body.type,
+      JSON.stringify(body.data),
+      completedCount,
+      totalCount,
+      body.signed_off ? 1 : 0,
+      body.signed_off ? now : null,
+      user?.name || 'Director',
+      now,
+      now
+    ).run();
+
+    return c.json({
+      success: true,
+      id,
+      completedCount,
+      totalCount,
+      percent: totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
+    });
+  }
 });
 
 // Get daily checklist log for a date (defaults to today)
